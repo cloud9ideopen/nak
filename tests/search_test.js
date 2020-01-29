@@ -2,14 +2,10 @@
 
 var Assert = require("assert");
 var Exec = require("child_process").exec;
-var Fs = require('fs');
 
 var basePath = __dirname + "/search_fixtures";
-var nak = require('../lib/nak');
 
 var nakPath = "node bin/nak";
-//var nakPath = "node build/nak.min";
-
 var parseOutput = require("./test_helpers").parseOutput;
 
 describe("search", function() {
@@ -201,23 +197,6 @@ describe("search", function() {
           Assert.equal(output.count, 5);
           Assert.equal(output.filecount, 3);
 
-          next();
-         });
-      });
-
-      it("should understand what to do with onFilepathSearchFn (as a process.env var)", function(next) {
-         var fn = function(filepath) {
-          if (/file1\.txt/.test(filepath)) return "photo";
-          return null;
-         };
-
-         process.env.nak_onFilepathSearchFn = nak.serialize(fn);
-
-         Exec(nakPath + " -a .nakignore 'photo' " + basePath, function(err, stdout, stderr) {
-          var output = parseOutput(err, stdout, stderr);
-
-          Assert.equal(output.count, 5);
-          Assert.equal(output.filecount, 3);
           next();
          });
       });
