@@ -55,55 +55,6 @@ options.path = ".";
 nak.run(options);
 ```
 
-## Your own function event handlers - BETA
-
-If you want, you can define some of your own function handling for certain events, 
-and pass them to `nak`.
-All functions should return `null` upon failing.
-
-Currently available functions are:
-
-* onFilepathSearchFn(filepath) - Given a `filepath`, this returns a String representing 
-the contents of that file
-
-If you're using `nak` as part of a Node.js script using `child_process.exec` or 
-`child_process.spawn` you **MUST** serialize your function as JSON; `nak` will 
-deserialize it for you. You must also store the function as `process.env.nak_<function_name>`. 
-This is because `process.env` is automatically passed to the `exec` or `spawn` 
-function. Modifying `process.env` like this only affects the running script, not your machine.
-
-Behind the scenes, serialization occurs via the [simplefunc](https://github.com/ajlopez/SimpleFunc) module.
-
-In the following examples, when `nak` encounters a filepath called `file1.txt`, 
-it'll return "photo" as the file's contents. Otherwise, it returns `null`, and 
-normal `nak` behavior is performed--in this case, a disk read of the file.
-
-### Event functions in a script
-
-```javascript
-var nak = require('nak'),
-    Exec = require('child_process').exec;
-
-var fn = function(filepath) {
-    if (/file1\.txt/.test(filepath)) return "photo";
-    return null;
-}
-
-process.env.nak_onFilepathSearchFn = nak.serialize(fn);
-
-Exec(nakPath + " " + "-a .nakignore 'photo' " + process.cwd(), function(err, stdout, stderr) {
- // ...
-}
-```
-
-### Event function from the command line
-
-This is ugly, but it works the same as above:
-
-```bash
-nak -a .nakignore 'photo' --onFilepathSearchFn 'if (/file1\.txt/.test(filepath)) return "photo";\nreturn null;' .
-```
-
 # Why?
 
 After reading Felix's [Faster than C](https://github.com/felixge/faster-than-c) notes, 

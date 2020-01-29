@@ -9,16 +9,13 @@
       "email": "kevin@github.com"
     }],
     "dependencies": {
-        "isbinaryfile": "2.0.0",
-        "simplefunc": "0.0.2",
-        "colors": "0.6.2"
+        "isbinaryfile": "2.0.x",
+        "colors": "0.6.x"
     },
     "devDependencies": {
-        "uglify-js": "2.3.5",
-        "execSync": "0.0.4",
-        "mocha": "1.10.0",
-        "wrench": "1.5.1",
-        "nprof": ""
+        "uglify-js": "2.8.x",
+        "mocha": "3.2.x",
+        "wrench": "1.5.x"
     },
     "bin": { "nak": "./bin/nak" },
     "main": "./lib/nak",
@@ -28,6 +25,9 @@
       "url" : "http://github.com/gjtorikian/nak.git"
     },
     "scripts": {
-        "test": "mocha tests/test_runner.js"
+        "test": "npm run test:unit && npm run test:lint",
+        "test:unit": "mocha tests/test_runner.js",
+        "test:lint": "eslint '**/*.js' --ignore-pattern 'tests/*_fixtures'",
+        "cov": "npm run test"
     }
 }
