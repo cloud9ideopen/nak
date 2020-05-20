@@ -147,7 +147,7 @@ npm test
 # Builds
 
 Building is necessary only if you want a minified version of nak, or, a version 
-that works with [VFS-Local](https://github.com/c9/vfs-local).
+that works with [VFS-Local](https://github.com/c9open/vfs-local).
 
 Just call `node compile.js` from the root directory to generate a build. You'll 
 need to `npm install uglify-js` first.
